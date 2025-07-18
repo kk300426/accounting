@@ -265,7 +265,7 @@
         }
 
         function saveToDrive(data) {
-            fetch("https://script.google.com/macros/s/AKfycbzia26qc_xoqoJTRtngz_v51YZS8F1q3VvG9e3Lz1Ey/exec", {
+            fetch("https://script.google.com/macros/s/AKfycbx6ZuGyd77LNf544e9jMQd3cwEQ9zeWI_fg2ir2-_8K/exec", {
                 method: "POST",
                 body: JSON.stringify(data),
                 headers: {
@@ -278,7 +278,7 @@
         }
 
         function loadFromDrive() {
-            fetch("https://script.google.com/macros/s/AKfycbzia26qc_xoqoJTRtngz_v51YZS8F1q3VvG9e3Lz1Ey/exec")
+            fetch("https://script.google.com/macros/s/AKfycbx6ZuGyd77LNf544e9jMQd3cwEQ9zeWI_fg2ir2-_8K/exec")
                 .then(res => res.json())
                 .then(data => {
                     transactions = data;
