@@ -53,7 +53,7 @@
         }
     </style>
 </head>
-<body>
+<body onload="loadFromLocal()">
     <div class="container mt-4">
         <h1>MyAccounting</h1>
 
@@ -182,7 +182,7 @@
             });
             transactions.push(...newEntries);
             updateTables();
-            saveToDrive(transactions);
+            saveToLocal(transactions);
             clearRows(type + 'Table');
         }
 
@@ -247,50 +247,33 @@
             });
             transactions.push(...newEntries);
             updateTables();
-            saveToDrive(transactions);
+            saveToLocal(transactions);
             document.getElementById('editTable').innerHTML = '';
         }
 
         function editTransaction(index, field, value) {
             transactions[index][field] = value;
             updateTables();
-            saveToDrive(transactions);
+            saveToLocal(transactions);
         }
 
         function deleteTransaction(index) {
             transactions.splice(index, 1);
             updateTables();
-            saveToDrive(transactions);
+            saveToLocal(transactions);
             loadEditTable();
         }
 
-        function saveToDrive(data) {
-            fetch("https://script.google.com/macros/s/AKfycbx6ZuGyd77LNf544e9jMQd3cwEQ9zeWI_fg2ir2-_8K/exec", {
-                method: "POST",
-                body: JSON.stringify(data),
-                headers: {
-                    "Content-Type": "application/json",
-                }
-            })
-            .then(res => res.text())
-            .then(msg => console.log("Saved:", msg))
-            .catch(err => console.error("Error saving:", err));
+        function saveToLocal(data) {
+            localStorage.setItem('data', JSON.stringify(data));
         }
 
-        function loadFromDrive() {
-            fetch("https://script.google.com/macros/s/AKfycbx6ZuGyd77LNf544e9jMQd3cwEQ9zeWI_fg2ir2-_8K/exec")
-                .then(res => res.json())
-                .then(data => {
-                    transactions = data;
-                    updateTables();
-                })
-                .catch(err => console.error("Error loading:", err));
-        }
-
-        window.onload = () => {
-            clearRows('incomeTable');
-            clearRows('expenseTable');
-            loadFromDrive();
+        function loadFromLocal() {
+            const data = JSON.parse(localStorage.getItem('data'));
+            if (Array.isArray(data)) {
+                transactions = data;
+                updateTables();
+            }
         }
     </script>
 </body>
